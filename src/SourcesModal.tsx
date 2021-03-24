@@ -13,9 +13,18 @@ import {
   Input,
   ModalFooter,
   Button,
+  Code,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { FaTimes, FaTrash, FaPlus } from "react-icons/fa";
+import {
+  FaTimes,
+  FaTrash,
+  FaPlus,
+  FaGithub,
+  FaHtml5,
+  FaTrashRestore,
+} from "react-icons/fa";
 
 interface SourcesModalProps {
   isOpen: boolean;
@@ -65,29 +74,45 @@ export const SourcesModal = ({
         </ModalHeader>
 
         <ModalBody>
-          <Text>Current sources</Text>
-          {sources.map((source, index) => (
-            <Flex
-              px={10}
-              justifyContent="space-between"
-              alignItems="center"
-              key={`Source-${index}`}
-            >
-              <Text>
-                {source.replace("https://cors-anywhere.herokuapp.com/", "")}
-              </Text>
-              <IconButton
-                icon={<FaTrash />}
-                aria-label={`Delete ${source}`}
-                variant="outline"
-                onClick={() => {
-                  const newSrc = sources.slice();
-                  newSrc.splice(index, 1);
-                  setSources(newSrc);
-                }}
-              />
-            </Flex>
-          ))}
+          <VStack>
+            <Text>
+              You can add more external sources (in JSON format) to generate
+              even more messages. For example: add{" "}
+              <Code>cmp.neocities.org/ted.json</Code> Note that the more sources
+              you add, the longer the page will load for.
+            </Text>
+
+            <Text>Current sources:</Text>
+          </VStack>
+
+          {sources.length === 0 ? (
+            <VStack>
+              <Text>You don't have any sources.</Text>
+            </VStack>
+          ) : (
+            sources.map((source, index) => (
+              <Flex
+                px={10}
+                justifyContent="space-between"
+                alignItems="center"
+                key={`Source-${index}`}
+              >
+                <Text>
+                  {source.replace("https://thingproxy.freeboard.io/fetch/", "")}
+                </Text>
+                <IconButton
+                  icon={<FaTrash />}
+                  aria-label={`Delete ${source}`}
+                  variant="outline"
+                  onClick={() => {
+                    const newSrc = sources.slice();
+                    newSrc.splice(index, 1);
+                    setSources(newSrc);
+                  }}
+                />
+              </Flex>
+            ))
+          )}
           {isTryingToFetch && (
             <HStack spacing={3}>
               <Spinner />
@@ -120,14 +145,22 @@ export const SourcesModal = ({
                     })
                   )
                   .catch((err) => {
-                    fetch(`https://cors-anywhere.herokuapp.com/${toAdd}`)
+                    const fixToAdd = (str: string) =>
+                      !/^((http|https):\/\/)/.test(str)
+                        ? `https://${str}`
+                        : str;
+                    fetch(
+                      `https://thingproxy.freeboard.io/fetch/${fixToAdd(toAdd)}`
+                    )
                       .then((res) =>
                         res.json().then((src) => {
                           if (!res.ok) throw new Error();
                           if (checkIfUsableSource(src)) {
                             setSources((cur) => [
                               ...cur,
-                              `https://cors-anywhere.herokuapp.com/${toAdd}`,
+                              `https://thingproxy.freeboard.io/fetch/${fixToAdd(
+                                toAdd
+                              )}`,
                             ]);
                           } else {
                             alert("Unusable source");
@@ -135,7 +168,7 @@ export const SourcesModal = ({
                         })
                       )
                       .catch((err) => {
-                        alert("Wrong URL");
+                        alert("Wrong URL.");
                       });
                   });
                 setIsTryingToFetch(false);
@@ -144,9 +177,34 @@ export const SourcesModal = ({
               }}
             />
           </Flex>
+          <VStack mt={5}>
+            <Button
+              colorScheme="red"
+              leftIcon={<FaTrashRestore />}
+              onClick={() => {
+                setSources(["./main.json"]);
+              }}
+            >
+              Reset defaults
+            </Button>
+          </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={onClose}>Close</Button>
+          <HStack>
+            <Button as="a" href="/v1/index.html" leftIcon={<FaHtml5 />}>
+              Version 1
+            </Button>
+            <Button
+              as="a"
+              href="https://github.com/x-t/ted-cruz-generator"
+              leftIcon={<FaGithub />}
+            >
+              Source
+            </Button>
+            <Button onClick={onClose} color="red">
+              Close
+            </Button>
+          </HStack>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ted cruz tweet generator (bad)</title>
+  <script defer src="index.js"></script>
+  <style>
+    body {
+      font-family: Arial,Helvetica Neue,Helvetica,sans-serif; 
+      text-align: center;
+      color: white;
+      background-color: rgb(39, 55, 97);
+      font-size: 20pt;
+    }
+
+    .idk {
+      font-size: 15pt;
+    }
+
+    pre {
+      font-weight: bold;
+      padding-bottom: 50px;
+      white-space: pre-wrap;       /* css-3 */
+      white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+      white-space: -pre-wrap;      /* Opera 4-6 */
+      white-space: -o-pre-wrap;    /* Opera 7 */
+      word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+
+    .idk > p, .idk > h4 {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .idk {
+      margin-top: 30px !important;
+      margin-bottom: 30px !important;
+    }
+
+    .penis {
+      display: flex;
+      justify-content: center;
+    }
+
+    .shite {
+      max-width: 76px !important;
+      max-height: 28px !important;
+      min-width: 76px !important;
+      min-height: 28px !important;
+      width: 76px !important;
+      height: 28px !important;
+      padding: 0 !important;
+      text-transform: initial !important;
+      font-weight: initial !important;
+      font-size: 13px !important;
+    }
+
+    .lol {
+      /* best css in this world */
+      transform: translateY(-4.5px);
+      display: block;
+    }
+
+    #idontknowhowtodothispleasegodhelpcssissuchafuckingpainitsnotevenfunnywellitkindofis {
+      min-width: 20px;
+    }
+
+  </style>
+  <link href="button.css" rel="stylesheet" />
+  <link id="fontawesome" rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.1/css/all.css" crossorigin="anonymous" />
+</head>
+
+<body>
+  <script>
+
+  window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    
+    t._e = [];
+    t.ready = function(f) {
+      t._e.push(f);
+    };
+    
+    return t;
+  }(document, "script", "twitter-wjs"));
+  
+  </script>
+  
+  <section class="idk">
+  <h4>js experiment number 7144</h4>
+  <p>this one generates random tweets to ted cruz</p>
+  </section>
+  <section class="penis">
+  <button onclick="tedcruz.gentweet()" class="pure-material-button-contained shite">
+    <span class="lol"><i class="fas fa-cog"></i> Make</span>
+  </button>
+  <div id="idontknowhowtodothispleasegodhelpcssissuchafuckingpainitsnotevenfunnywellitkindofis"></div>
+  <section id="shitButton"></section>
+  </section>
+  <pre id="tweet"></pre>
+</body>
+</html>

@@ -128,7 +128,6 @@ export const App: React.FC = () => {
                       insult
                     )}`}
                     target="_blank"
-                    rel="noopener noreferrer"
                     leftIcon={<FaTwitter />}
                     colorScheme="blue"
                   >
